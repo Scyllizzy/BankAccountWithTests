@@ -12,6 +12,7 @@ namespace BankAccountWithTests.Tests
     public class BankAccountTests
     {
         [TestMethod()]
+        [TestCategory("Deposit")]
         public void Deposit_PositiveValue_AddsToBalance()
         {
             //Arrange - create objects and variables
@@ -27,6 +28,8 @@ namespace BankAccountWithTests.Tests
         }
 
         [TestMethod]
+        [TestCategory("Deposit")]
+        //[Priority(1)]
         public void Deposit_PosititveAmountWithCents_AddsToBalance()
         {
             // Arrange
@@ -43,6 +46,8 @@ namespace BankAccountWithTests.Tests
 
 
         [TestMethod]
+        [TestCategory("Deposit")]
+        //[Priority(2)]
         [DataRow(100.00)]
         [DataRow(100.99)]
         [DataRow(0.01)]
@@ -62,6 +67,7 @@ namespace BankAccountWithTests.Tests
         }
 
         [TestMethod]
+        [TestCategory("Deposit")]
         [DataRow(-1)]
         [DataRow(-1.99)]
         [DataRow(0)]
@@ -99,6 +105,45 @@ namespace BankAccountWithTests.Tests
         {
             // Arrange / Act / Assert
             Assert.ThrowsException<ArgumentException>(() => new BankAccount(accountNumber));
+        }
+
+        [TestMethod]
+        [TestCategory("Deposit")]
+        public void Deposit_MultiplePositiveDeposits_AddsToBalance()
+        {
+            //Arrange
+            BankAccount acc = new BankAccount("U030043664");
+            double depositAmount1 = 100.00;
+            double depositAmount2 = 50.00;
+
+            //Act
+            acc.Deposite(depositAmount1);
+
+            //Assert
+            Assert.AreEqual(depositAmount1, acc.Balance);
+
+            //Act
+            acc.Deposite(depositAmount2);
+
+            //Assert
+            Assert.AreEqual(depositAmount1 + depositAmount2, acc.Balance);
+        }
+
+        [TestMethod]
+        public void Withdraw_PositiveAmount_ReducesBalance()
+        {
+            //Arrange
+            string accNum = "U030043664";
+            double initialBal = 100.00;
+            double withdrawAmt = 25.00;
+            double expectedBalance = initialBal - withdrawAmt;
+            BankAccount acc = new BankAccount(accNum, initialBal);
+
+            //Act
+            acc.Withdraw(withdrawAmt);
+
+            //Assert
+            Assert.AreEqual(expectedBalance, acc.Balance);
         }
     }
 }

@@ -10,9 +10,12 @@ namespace BankAccountWithTests
     {
         private string accountNumber;
 
-        public BankAccount(string AccountNumber)
+        public BankAccount(string accNum) : this(accNum, 0.00) { }
+
+        public BankAccount(string accNum, double initialBal)
         {
-            this.AccountNumber = AccountNumber;
+            AccountNumber = accNum;
+            Balance = initialBal;
         }
 
         public string AccountNumber 
@@ -36,16 +39,27 @@ namespace BankAccountWithTests
         /// <summary>
         /// Deposits a positive amount of money into the account and returns the new balance
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="amount"/> is 0 or less</exception>
-        /// <param name="amount">The amount of money to deposite into the bank account</param>
-        public double Deposite(double amount)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="depositAmount"/> is 0 or less</exception>
+        /// <param name="depositAmount">The amount of money to deposite into the bank account</param>
+        public double Deposite(double depositAmount)
         {
-            if (amount <= 0)
+            if (depositAmount <= 0)
             {
                 throw new ArgumentOutOfRangeException("Amount must be greater than 0.");
             }
 
-            Balance += amount;
+            Balance += depositAmount;
+            return Balance;
+        }
+
+        public double Withdraw(double withdrawAmt)
+        {
+            if (withdrawAmt <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Amount must be greater than 0.");
+            }
+
+            Balance -= withdrawAmt;
             return Balance;
         }
     }
